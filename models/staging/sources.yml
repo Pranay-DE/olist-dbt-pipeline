@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: olist
+    description: "Raw Olist Brazilian E-Commerce data loaded from CSV files"
+    schema: main
+    tables:
+      - name: olist_orders_dataset
+        description: "Raw orders data — one row per order"
+      - name: olist_customers_dataset
+        description: "Raw customers data"
+      - name: olist_order_items_dataset
+        description: "Raw order items — one row per item per order"
+      - name: olist_products_dataset
+        description: "Raw products data"
+      - name: olist_sellers_dataset
+        description: "Raw sellers data"
+      - name: olist_order_payments_dataset
+        description: "Raw payment data per order"
+      - name: olist_order_reviews_dataset
+        description: "Raw review data per order"
+      - name: product_category_name_translation
+        description: "Portuguese to English category name translation"
+      - name: olist_geolocation_dataset
+        description: "Geographical Location Data"
