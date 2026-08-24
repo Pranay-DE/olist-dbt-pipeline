@@ -21,9 +21,9 @@ from Olist through Bronze → Silver → Gold layers using dbt and DuckDB.
 
 ## Project Structure
 models/
-├── staging/ ← views, one per source table
-├── silver/ ← cleaned and joined tables
-└── gold/ ← business ready final models
+- staging/ ← views, one per source table
+- silver/ ← cleaned and joined tables
+- gold/ ← business ready final models
 
 ## How to Run
 1. Install dependencies: `pip install dbt-duckdb`
