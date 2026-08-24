@@ -1,5 +1,6 @@
-
 target/
 dbt_packages/
 logs/
 .env
+dev.duckdb
+raw_data/
