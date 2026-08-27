@@ -4,3 +4,4 @@ logs/
 .env
 dev.duckdb
 raw_data/
+*_preview.csv
