@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: orders_clean
+    description: "Cleaned and enriched orders data with delivery metrics"
+    columns:
+      - name: order_id
+        description: "Unique Orders Identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+
+      - name: order_status
+        description: "Raw order status from source"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['delivered', 'shipped', 'canceled',
+                       'unavailable', 'invoiced', 'processing',
+                       'created', 'approved']
+
+      - name: order_status_category
+        description: "Simplified status category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Completed', 'In Progress', 'Canceled']
+
+      - name: ordered_at
+        description: "Timestamp when order was placed"
+        tests:
+          - not_null
+
+      - name: delivery_category
+        description: "On Time / Late / Not Delivered"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Delivered On Time', 'Late', 'Not Delivered']
+
+      - name: is_date_valid
+        description: "Whether date sequence is valid"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['VALID', 'Invalid Date']
