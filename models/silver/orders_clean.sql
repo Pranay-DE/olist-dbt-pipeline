@@ -1,3 +1,12 @@
+{{ config(
+    materialized='table',
+    pre_hook=[
+        "Drop Table If EXISTS {{ this.name }}_backup",
+        "Create TABLE {{ this.name }}_backup as Select * FROM {{ this.name }}"
+    ]
+)
+}}
+
 with orders as(
     select * from{{ref('stg_orders')}}
 ),
