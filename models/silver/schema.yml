@@ -49,3 +49,34 @@ models:
           - not_null
           - accepted_values:
               values: ['VALID', 'Invalid Date']
+
+  - name: customers_clean
+    description: "Cleaned customers data with city standardisation and customer type"
+    columns:
+      - name: customer_id
+        description: "Unique identifier per order"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_unique_id
+        description: "Unique identifier per person across all orders"
+        tests:
+          - not_null
+
+      - name: customer_city
+        description: "Customer city in lowercase"
+        tests:
+          - not_null
+
+      - name: customer_state
+        description: "Customer state abbreviation"
+        tests:
+          - not_null
+
+      - name: customer_type
+        description: "New Customer or Repeat Customer"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['New Customer', 'Repeat Customer']
