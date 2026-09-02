@@ -133,3 +133,41 @@ models:
         description: "Total cost to customer for this item including freight. Calculated as price + freight_value."
         tests:
           - not_null
+
+  - name: products_clean
+    description: "Cleaned products data with English category names, corrected column name typos, and derived volume metric. Grain: one row per product_id."
+    columns:
+      - name: product_id
+        description: "Unique product identifier."
+        tests:
+          - not_null
+          - unique
+
+      - name: product_category
+        description: "Product category in English. Falls back to Portuguese category name if English translation not available. 'Unknown' if no category exists in source."
+        tests:
+          - not_null
+
+      - name: product_name_length
+        description: "Number of characters in product name. Source column typo corrected from 'lenght' to 'length'."
+
+      - name: product_description_length
+        description: "Number of characters in product description. Source column typo corrected from 'lenght' to 'length'."
+
+      - name: product_photos_qty
+        description: "Number of photos the seller uploaded for this product."
+
+      - name: product_weight_g
+        description: "Product weight in grams."
+
+      - name: product_length_cm 
+        description: "Product length in centimetres."
+
+      - name: product_height_cm
+        description: "Product height in centimetres."
+      
+      - name: product_width_cm
+        description: "Product width in centimetres."
+      
+      - name: product_volume_cm3
+        description: "Derived product volume in cubic centimetres. Calculated as length x height x width. Null when any dimension is null."
