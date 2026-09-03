@@ -217,3 +217,27 @@ models:
           - not_null
           - accepted_values:
               values: ['Near Zero', 'Low', 'Medium', 'High']
+
+  - name: sellers_clean
+    description: "Cleaned sellers data with standardised column names and city name normalisation. Grain: one row per seller_id."
+    columns:
+      - name: seller_id
+        description: "Unique seller identifier."
+        tests:
+          - not_null
+          - unique
+
+      - name: zip_code_prefix
+        description: "Seller zip code prefix. Renamed from seller_zip_code_prefix."
+        tests:
+          - not_null
+
+      - name: city
+        description: "Seller city in lowercase. Renamed from seller_city."
+        tests:
+          - not_null
+
+      - name: state
+        description: "Seller state abbreviation. Renamed from seller_state."
+        tests:
+          - not_null
