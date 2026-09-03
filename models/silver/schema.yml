@@ -241,3 +241,70 @@ models:
         description: "Seller state abbreviation. Renamed from seller_state."
         tests:
           - not_null
+
+  - name: order_reviews_clean
+    description: "Cleaned order reviews data with sentiment categorisation, response time analysis and duplicate handling.
+                  One review per order kept (latest by review_creation_date).
+                  Grain: one row per order_id."
+    columns:
+      - name: review_id
+        description: "Review identifier. Not unique — same review_id can appear across multiple orders due to source data quality issues.
+                      is_review_id_unique flag identifies affected records."
+        tests:
+          - not_null
+
+      - name: order_id
+        description: "Foreign key to orders_clean. One review per order after deduplication — latest review kept."
+        tests:
+          - not_null
+          - unique
+
+      - name: review_score
+        description: "Customer satisfaction score from 1 to 5. 1 = worst, 5 = best."
+        tests:
+          - not_null
+      
+      - name: review_score_category
+        description: "Sentiment derived from review_score. 1-2 = Negative, 3 = Neutral, 4-5 = Positive."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Negative', 'Neutral', 'Positive']
+      
+      - name: review_title
+        description: "Customer review title. 'No Comment' if customer did not provide a title."
+        tests:
+          - not_null
+      
+      - name: review_message
+        description: "Customer review message body. 'No Comment' if customer did not write a message."
+        tests:
+          - not_null
+
+      - name: reviewed_at
+        description: "Timestamp when customer submitted the review."
+        tests:
+          - not_null
+      
+      - name: answered_at
+        description: "Timestamp when seller responded to the review."
+        tests:
+          - not_null
+      
+      - name: days_to_answer
+        description: "Number of days between review submission and seller response."
+        tests:
+          - not_null
+      
+      - name: is_late_response
+        description: "Whether seller took more than 30 days to respond. Late Response / On Time."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Late Response', 'On Time']
+
+      - name: is_review_id_unique
+        description: "True if review_id appears only once in source data.
+                      False if same review_id was linked to multiple orders."
+        tests:
+          - not_null
