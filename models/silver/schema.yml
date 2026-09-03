@@ -171,3 +171,49 @@ models:
       
       - name: product_volume_cm3
         description: "Derived product volume in cubic centimetres. Calculated as length x height x width. Null when any dimension is null."
+
+  - name: order_payments_clean
+    description: "Cleaned payment data with payment type standardisation, installment categorisation and value categorisation.
+                  Grain: one row per order_id and payment_sequential combination.
+                  One order can have multiple payment methods."
+    columns:
+      - name: order_id
+        description: "Foreign key to orders_clean. One order can have multiple payment rows if paid with multiple methods."
+        tests:
+          - not_null
+
+      - name: payment_sequential
+        description: "Order of payment method used. 1 = primary payment, 2 = secondary payment method etc."
+        tests:
+          - not_null
+
+      - name: payment_type
+        description: "Payment method used. Standardised — not_defined mapped to Unknown."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['credit_card', 'boleto', 'voucher', 'debit_card', 'unknown']
+
+      - name: payment_installments
+        description: "Number of installments chosen by customer. 1 = paid in full. 0 = not applicable (flagged as suspicious)."
+        tests:
+          - not_null
+
+      - name: payment_installment_type
+        description: "Categorised installment type. Not Applicable / Full Payment / Short Term / Long Term."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Not Applicable', 'Full Payment', 'Short Term', 'Long Term']
+
+      - name: payment_value
+        description: "Payment amount in Brazilian Real (BRL) for this payment method. One order total is sum of all payment_sequential rows."
+        tests:
+          - not_null
+
+      - name: payment_value_category
+        description: "Payment value tier classification. Near Zero / Low / Medium / High."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Near Zero', 'Low', 'Medium', 'High']
