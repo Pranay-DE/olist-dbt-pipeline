@@ -39,6 +39,7 @@ cleaned as(
         as freight_percentage,
         price + freight_value as total_item_value
     From removed_duplicates
+    WHERE row_num = 1
 )
 
 Select * From cleaned
