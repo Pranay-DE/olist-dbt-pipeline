@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: olist_master_table
+    description: "Wide master table at order-item grain combining all business entities.
+                  One row per order_id + product_id combination. Use COUNT(DISTINCT order_id) for order level metrics.
+                  Invalid date orders excluded."
+    columns:
+      - name: order_id
+        description: "Order identifier. Not unique at this grain — repeats for each item in the order."
+        tests:
+          - not_null
+
+      - name: order_item_id
+        description: "Item sequence number within order."
+
+      - name: product_id
+        description: "Product Identifier"
+
+      - name: customer_id
+        description: "Customer identifier per order."
+        tests:
+          - not_null
+
+      - name: price
+        description: "Item price in BRL."
+
+      - name: total_item_value
+        description: "Price + freight for this item."

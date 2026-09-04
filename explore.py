@@ -1,8 +1,8 @@
 import duckdb
 conn = duckdb.connect('dev.duckdb')
 
-print("=== CLEAN TABLES ===")
-conn.sql("SELECT table_name FROM duckdb_tables() WHERE table_name LIKE '%clean%'").show()
+# print("=== CLEAN TABLES ===")
+# conn.sql("SELECT table_name FROM duckdb_tables() WHERE table_name LIKE '%master%'").show()
 
 # print("=== Order Reviews Columns ===")
 # conn.sql("Describe stg_order_reviews").show()
@@ -103,3 +103,12 @@ conn.sql("SELECT table_name FROM duckdb_tables() WHERE table_name LIKE '%clean%'
 #         COUNT(DISTINCT order_id) as distinct_order_ids
 #     FROM olist_order_reviews_dataset
 # """).show()
+
+print("=== MASTER TABLE ROW COUNT ===")
+conn.sql("SELECT COUNT(*) as total FROM olist_master_table").show()
+
+print("=== MASTER TABLE COLUMNS ===")
+conn.sql("DESCRIBE olist_master_table").show()
+
+print("=== SAMPLE DATA ===")
+conn.sql("SELECT * FROM olist_master_table LIMIT 3").show()
