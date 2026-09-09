@@ -27,3 +27,37 @@ models:
 
       - name: total_item_value
         description: "Price + freight for this item."
+
+  - name: sales_performance
+    description: "Sales performance aggregated by product category, fiscal year and month.
+                  Grain: one row per product_category + fiscal_year + order_month."
+    columns:
+      - name: product_category
+        description: "Product category in English."
+        tests:
+          - not_null
+
+      - name: fiscal_year
+        description: "Fiscal Year of Order"
+        tests:
+          - not_null
+
+      - name: order_month
+        description: "Month number of the order (1-12)."
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: "Count of distinct orders for this category/month."
+        tests:
+          - not_null
+
+      - name: total_revenue
+        description: "Sum of item prices (excluding freight)."
+        tests:
+          - not_null
+
+      - name: total_value
+        description: "Sum of items prices (revenue + freight)"
+        tests:
+          - not_null

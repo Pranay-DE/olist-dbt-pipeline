@@ -33,6 +33,7 @@ master as(
         o.order_id,
         o.ordered_at,
         o.delivered_at,
+        o.fiscal_year,
         o.estimated_delivery_at,
         o.order_status_category,
         o.actual_days_to_delivered,
