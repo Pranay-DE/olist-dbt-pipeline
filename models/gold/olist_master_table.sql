@@ -14,17 +14,30 @@ products as(Select * From {{ref ('products_clean')}}),
 sellers as(Select * From {{ref ('sellers_clean')}}),
 reviews as(Select * From {{ref ('order_reviews_clean')}}),
 
+-- make payment rank to take all payment type
+payment_rank_tab AS (
+    SELECT
+        order_id,
+        payment_type,
+        payment_value,
+        ROW_NUMBER() OVER (
+            PARTITION BY order_id 
+            ORDER BY payment_sequential ASC
+        ) AS payment_rank
+    FROM {{ref ('order_payments_clean')}}
+),
+
 -- agg payment to order level
 payment_agg as(
     SELECT
         order_id,
-        MAX(CASE WHEN payment_sequential = 1
+        MAX(CASE WHEN payment_rank = 1
             THEN payment_type END) as primary_payment_type,
         SUM(payment_value) as total_payment_value,
         CASE WHEN COUNT(*) > 1
             THEN TRUE ELSE FALSE
         END as has_multiple_payment
-    FROM {{ref ('order_payments_clean')}}
+    FROM payment_rank_tab
     GROUP BY order_id
 ),
 
