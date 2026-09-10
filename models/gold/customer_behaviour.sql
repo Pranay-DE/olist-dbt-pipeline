@@ -1,5 +1,9 @@
 {{ config(
-    MATERIALIZED = 'table'
+    MATERIALIZED = 'table',
+    pre_hook = [
+        "DROP TABLE IF EXISTS {{ this.name }}_backup",
+        "CREATE TABLE {{ this.name }}_backup as SELECT * FROM {{ this.name }}"
+    ]
 )
 }}
 
@@ -30,7 +34,10 @@ customer as(
         COUNT(DISTINCT m.order_id) as total_orders,
         AVG(m.review_score) as avg_review_score,
         AVG(m.actual_days_to_delivered) as avg_delivery_days,
-        p.primary_payment_type as preferred_payment_type,
+        CASE
+            WHEN p.primary_payment_type IS NULL THEN 'not_available'
+            ELSE p.primary_payment_type
+        END as preferred_payment_type,
         MAX(p.usage_count) as payment_usage_count
     FROM master as m
     LEFT JOIN payment_ranked as p

@@ -61,3 +61,56 @@ models:
         description: "Sum of items prices (revenue + freight)"
         tests:
           - not_null
+
+  - name: customer_behaviour
+    description: "Customer-level behaviour table at customer_unique_id grain.
+                  One row per unique customer with aggregated spend, orders, reviews, delivery, and preferred payment method
+                  Preferred payment = most frequently used mode; ties broken alphabetically."
+    columns:
+      - name: customer_unique_id
+        description: "True customer identity (primary key)"
+        tests:
+          - not_null
+    
+      - name: customer_city
+        description: "Customer's city"
+        tests:
+          - not_null
+
+      - name: customer_state
+        description: "Customer's state code"
+        tests:
+          - not_null
+
+      - name: customer_type
+        description: "New Customer or Repeat Customer"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['New Customer', 'Repeat Customer']
+
+      - name: total_spend
+        description: "Total lifetime spend by customer"
+
+      - name: total_orders
+        description: "Distinct count of customer's orders"
+        tests:
+          - not_null
+
+      - name: avg_review_score
+        description: "Average review score (1-5)"
+
+      - name: avg_delivery_days
+        description: "Average delivery days"
+
+      - name: preferred_payment_type
+        description: "Most used payment mode (ties → alphabetical); 'not_available' if missing"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['unknown', 'boleto', 'debit_card', 'voucher', 'not_available', 'credit_card']
+
+      - name: payment_usage_count
+        description: "Times the preferred payment mode was used"
+        tests:
+          - not_null
