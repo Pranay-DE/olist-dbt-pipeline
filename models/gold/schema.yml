@@ -114,3 +114,78 @@ models:
         description: "Times the preferred payment mode was used"
         tests:
           - not_null
+  
+  - name: delivery_performance
+    description: "Seller-level delivery performance metrics aggregated at seller_id grain.
+                  One row per seller. Delivery rates use the INCLUSIVE definition (Not Delivered counted in denominator) to reflect true customer experience.
+                  Delivery day metrics only consider orders that were actually delivered."
+    columns:
+      - name: seller_id
+        description: "Unique identifier for each seller. Primary key of this table."
+        tests:
+          - not_null
+          - unique
+
+      - name: seller_city
+        description: "City where the seller is located."
+        tests:
+          - not_null
+
+      - name: seller_state
+        description: "State (2-letter code) where the seller is located."
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: "Total distinct orders handled by the seller."
+        tests:
+          - not_null
+
+      - name: delivered_orders
+        description: "Number of orders successfully delivered (on time + late)."
+        tests:
+          - not_null
+
+      - name: on_time_orders
+        description: "Number of orders delivered on or before the estimated delivery date."
+        tests:
+          - not_null
+      
+      - name: late_orders
+        description: "Number of orders delivered after the estimated delivery date."
+        tests:
+          - not_null
+
+      - name: not_delivered_orders
+        description: "Number of orders that were never delivered (cancelled, lost, or failed)."
+        tests:
+          - not_null
+
+      - name: on_time_delivery_rate
+        description: "Fraction of ALL orders (including not delivered) that were delivered on time. Range 0-1"
+        tests:
+          - not_null
+      
+      - name: late_delivery_rate
+        description: "Fraction of ALL orders that were delivered late. Range 0-1."
+        tests:
+          - not_null
+      
+      - name: not_delivered_rate
+        description: "Fraction of ALL orders that were never delivered. Range 0-1."
+        tests:
+          - not_null
+      
+      - name: avg_actual_days_to_delievered
+        description: "Average number of days taken to deliver an order. NULL if seller has no delivered orders."
+
+      - name: avg_delivery_variance_days
+        description: "Average difference between actual and estimated delivery (negative = early, positive = late). NULL if no delivered orders."
+      
+      - name: avg_review_score
+        description: "Average review score (1-5) received across all orders. NULL if seller received no reviews."
+
+      - name: total_review_count
+        description: "Number of orders where the seller received a review score."
+        tests:
+          - not_null

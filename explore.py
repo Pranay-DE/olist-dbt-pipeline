@@ -4,44 +4,59 @@ conn = duckdb.connect('dev.duckdb')
 # print("=== Backup TABLES ===")
 # conn.sql("SELECT table_name FROM duckdb_tables() WHERE table_name LIKE '%backup%'").show()
 
-# print("=== Customer Behaviour Sample ===")
+# print("=== Delivery Performance Sample ===")
 # conn.sql("""
-#     SELECT *
-#     FROM customer_behaviour
-#     ORDER BY total_orders DESC
+#     SELECT * FROM delivery_performance
 #     LIMIT 10
 # """).show()
 
 # print("=== ROW COUNT ===")
-# conn.sql("SELECT COUNT(*) as total FROM customer_behaviour").show()
+# conn.sql("Select count(*) as total_rows FROM delivery_performance").show()
+
+print("=== DESCRIBE DELIVERY PERFORMANCE ===")
+conn.sql("DESCRIBE delivery_performance").show()
 
 print("=== CHECK NULLS ===")
 conn.sql("""
-    Select
-        SUM(CASE WHEN customer_unique_id IS NULL THEN 1 ELSE 0 END) as null_customer_unique_id,
-        SUM(CASE WHEN customer_city IS NULL THEN 1 ELSE 0 END) as null_customer_city,
-        SUM(CASE WHEN customer_state IS NULL THEN 1 ELSE 0 END) as null_customer_state,
-        SUM(CASE WHEN customer_type IS NULL THEN 1 ELSE 0 END) as null_customer_type,
-        SUM(CASE WHEN total_spend IS NULL THEN 1 ELSE 0 END) as null_total_spend
-    FROM customer_behaviour
-""").show()
-
-print("=== CHECK NULLS ===")
-conn.sql("""
-    Select
+    SELECT
+        SUM(CASE WHEN seller_id IS NULL THEN 1 ELSE 0 END) as null_seller_id,
+        SUM(CASE WHEN seller_city IS NULL THEN 1 ELSE 0 END) as null_seller_city,
+        SUM(CASE WHEN seller_state IS NULL THEN 1 ELSE 0 END) as null_seller_state,
         SUM(CASE WHEN total_orders IS NULL THEN 1 ELSE 0 END) as null_total_orders,
-        SUM(CASE WHEN avg_review_score IS NULL THEN 1 ELSE 0 END) as null_avg_review_score,
-        SUM(CASE WHEN avg_delivery_days IS NULL THEN 1 ELSE 0 END) as null_avg_delivery_days,
-        SUM(CASE WHEN preferred_payment_type IS NULL THEN 1 ELSE 0 END) as null_preferred_payment_type,
-        SUM(CASE WHEN payment_usage_count IS NULL THEN 1 ELSE 0 END) as null_payment_usage_count
-    FROM customer_behaviour
+        SUM(CASE WHEN delivered_orders IS NULL THEN 1 ELSE 0 END) as null_delivered_orders
+    FROM delivery_performance
 """).show()
 
-# conn.sql("""
-#     Select order_id
-#     From order_payments_clean
-#     Group By order_id
-#     Having MIN(payment_sequential) > 1
-# """).show()
+print("=== CHECK NULLS ===")
+conn.sql("""
+    SELECT
+        SUM(CASE WHEN on_time_orders IS NULL THEN 1 ELSE 0 END) as null_on_time_orders,
+        SUM(CASE WHEN late_orders IS NULL THEN 1 ELSE 0 END) as null_late_orders,
+        SUM(CASE WHEN not_delivered_orders IS NULL THEN 1 ELSE 0 END) as null_not_delivered_orders,
+        SUM(CASE WHEN on_time_delivery_rate IS NULL THEN 1 ELSE 0 END) as null_on_time_delivery_rate,
+        SUM(CASE WHEN late_delivery_rate IS NULL THEN 1 ELSE 0 END) as null_late_delivery_rate
+    FROM delivery_performance
+""").show()
 
-# conn.sql("Select * From customer_behaviour where preferred_payment_type is null").show()
+print("=== CHECK NULLS ===")
+conn.sql("""
+    SELECT
+        SUM(CASE WHEN not_delivered_rate IS NULL THEN 1 ELSE 0 END) as null_not_delivered_rate,
+        SUM(CASE WHEN avg_actual_days_to_delievered IS NULL THEN 1 ELSE 0 END) as null_avg_actual_days_to_delievered,
+        SUM(CASE WHEN avg_delivery_variance_days IS NULL THEN 1 ELSE 0 END) as null_avg_delivery_variance_days,
+        SUM(CASE WHEN avg_review_score IS NULL THEN 1 ELSE 0 END) as null_avg_review_score,
+        SUM(CASE WHEN total_review_count IS NULL THEN 1 ELSE 0 END) as null_total_review_count
+    FROM delivery_performance
+""").show()
+
+# conn.sql("Select seller_id FROM delivery_performance where avg_review_score is NULL").show()
+
+# print("=== UNIQUE SELLER ID ===")
+# conn.sql("""
+#     SELECT
+#         seller_id,
+#         count(*) as count
+#     FROM delivery_performance
+#     GROUP BY seller_id
+#     HAVING COUNT(*) > 1
+# """).show()

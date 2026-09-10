@@ -79,7 +79,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['New Customer', 'Repeat']
+              values: ['New Customer', 'Repeat Customer']
 
   - name: order_items_clean
     description: "Cleaned order items data with duplicates removed, price categorisation and freight analysis. Grain: one row per unique order_id and product_id combination."
