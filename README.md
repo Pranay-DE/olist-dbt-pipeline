@@ -42,7 +42,7 @@ models/
     - *.sql
 tests/ → custom data quality tests
 
-## Staging Layer (Bronze)
+## Staging Layer (Bronze) Models
 
 | Model | Source Table |
 |-------|-------------|
@@ -68,7 +68,7 @@ tests/ → custom data quality tests
 | sellers_clean | stg_sellers | Column renaming, city normalisation |
 | order_reviews_clean | stg_order_reviews | Sentiment analysis, response time, deduplication |
 
-## Gold Layer
+## Gold Layer Models
 
 | Model | Grain | Business Questions Answered |
 |-------|-------|---------------------------|
