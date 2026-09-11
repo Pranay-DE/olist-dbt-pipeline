@@ -15,7 +15,7 @@ Built to demonstrate modern analytics engineering practices including medallion 
 flowchart TD
     A[CSV files<br/>9 sources] --> B[Staging - Bronze<br/>9 views]
     B --> C[Silver - Clean<br/>7 tables]
-    C --> D[Gold - Business]
+    C --> D[Gold - Business<br/>4 tables]
 ```
 
 ## Dataset
