@@ -13,9 +13,9 @@ Built to demonstrate modern analytics engineering practices including medallion 
 ## Architecture Diagram
 ```mermaid
 flowchart TD
-    A[CSV files<br/>9 sources] --> B[Staging - Bronze<br/>9 views<br/>Raw tables lightly cleaned]
-    B --> C[Silver - Clean<br/>7 tables<br/>Validated, deduplicated, enriched]
-    C --> D[Gold - Business<br/>4 tables<br/>Ready for analytics and reporting]
+    A[CSV files<br/>9 sources] --> B[Staging - Bronze<br/>9 views]
+    B --> C[Silver - Clean<br/>7 tables]
+    C --> D[Gold - Business]
 ```
 
 ## Dataset
@@ -42,7 +42,7 @@ models/
     - *.sql
 tests/ → custom data quality tests
 
-## Staging Layer
+## Staging Layer (Bronze)
 
 | Model | Source Table |
 |-------|-------------|
