@@ -10,6 +10,24 @@ Built to demonstrate modern analytics engineering practices including medallion 
 - **Silver:** 7 models — cleaned, deduplicated, validated and enriched business models, built as tables
 - **Gold:** 4 models — final business-ready analytical models for reporting and analysis
 
+## Architecture Diagram
+   CSV files (9 sources)
+           │
+           ▼
+   ┌────────────────────┐
+   │  Staging (Bronze)  │  9 views    — raw tables declared and lightly cleaned
+   └────────────────────┘
+           │
+           ▼
+   ┌────────────────────┐
+   │   Silver (Clean)   │  7 tables   — validated, deduplicated, enriched
+   └────────────────────┘
+           │
+           ▼
+   ┌────────────────────┐
+   │   Gold (Business)  │  4 tables   — ready for analytics and reporting
+   └────────────────────┘
+
 ## Dataset
 [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 - 99,441 orders from 2016 to 2018
@@ -70,19 +88,32 @@ tests/ → custom data quality tests
 | delivery_performance | seller_id | On time rate, late rate, avg delivery days, avg review score per seller |
 
 ## Data Quality
-- **92+ tests** across all layers — all passing
+- **112 tests** across all layers — all passing
 - Source empty checks on all 9 raw tables
-- Custom singular tests for business logic validation
+- Custom singular tests for business logic validation:
+    - assert_no_future_order_dates — no order_date beyond today
+    - assert_delivery_after_purchase — delivered_at >= purchased_at
+    - assert_positive_payment_value — all payment_value > 0
+    - assert_valid_review_score_range — review_score between 1 and 5
+    - assert_no_orphan_order_items — every item maps to a valid order
 - Pre-hook backup on every silver and gold model for point-in-time recovery
 - NULLIF protection on all division calculations
 - Deduplication logic on order_items and order_reviews
 
 ## Key Engineering Decisions
 - **Item grain for master table** — enables COUNT(DISTINCT order_id) for order metrics while allowing product level slicing without string splitting
-- **ROW_NUMBER for payment deduplication** — robust against payment_sequential not starting at 1 (found in source data)
-- **Pre-hook backup pattern** — backup created before each rebuild enabling instant rollback
+- **ROW_NUMBER for payment deduplication** — robust against payment_sequential not starting at 1 (found in source data across 80 orders)
+- **Pre-hook backup pattern** — before each silver/gold rebuild, the current table is dumped to {{ this.name }}_backup. Enables instant rollback if a downstream model breaks or if business logic needs reverting.
 - **LEFT JOIN in master table** — preserves cancelled orders with null item columns rather than losing business context
 - **Invalid date filtering** — 1,382 orders with date sequence violations excluded from gold layer
+- **Explicit tie-breaking on payment preference** — when a customer uses two payment types equally, tie is broken alphabetically for deterministic results
+
+## Skills Demostrated
+- **dbt**: models, sources, tests, docs, pre-hooks, materializations, refs
+- **SQL**: window functions, CTEs, conditional aggregation, NULLIF safety, DISTINCT-aware joins
+- **Data Modeling**: medallion architecture, grain selection, dimensional design
+- **Data Quality**: source freshness, accepted_values, relationships, custom singular tests
+- **Analytics Engineering**: DRY principles, layered dependencies, YAML documentation, schema contracts
 
 ## How to Run
 1. Install dependencies: `pip install dbt-duckdb`
