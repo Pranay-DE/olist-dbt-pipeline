@@ -11,22 +11,12 @@ Built to demonstrate modern analytics engineering practices including medallion 
 - **Gold:** 4 models — final business-ready analytical models for reporting and analysis
 
 ## Architecture Diagram
-   CSV files (9 sources)
-           │
-           ▼
-   ┌────────────────────┐
-   │  Staging (Bronze)  │  9 views    — raw tables declared and lightly cleaned
-   └────────────────────┘
-           │
-           ▼
-   ┌────────────────────┐
-   │   Silver (Clean)   │  7 tables   — validated, deduplicated, enriched
-   └────────────────────┘
-           │
-           ▼
-   ┌────────────────────┐
-   │   Gold (Business)  │  4 tables   — ready for analytics and reporting
-   └────────────────────┘
+```mermaid
+flowchart TD
+    A[CSV files<br/>9 sources] --> B[Staging - Bronze<br/>9 views<br/>Raw tables lightly cleaned]
+    B --> C[Silver - Clean<br/>7 tables<br/>Validated, deduplicated, enriched]
+    C --> D[Gold - Business<br/>4 tables<br/>Ready for analytics and reporting]
+```
 
 ## Dataset
 [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
