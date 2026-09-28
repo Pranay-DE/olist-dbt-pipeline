@@ -5,3 +5,4 @@ logs/
 dev.duckdb
 raw_data/
 *_preview.csv
+*.csv
