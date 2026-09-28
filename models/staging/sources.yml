@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: olist
     description: "Raw Olist Brazilian E-Commerce data loaded from CSV files"
-    schema: main
+    schema: raw
     tables:
       - name: olist_orders_dataset
         description: "Raw orders data — one row per order"

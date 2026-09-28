@@ -37,3 +37,8 @@ models:
       +materialized: table
     gold:
       +materialized: table
+
+
+seeds:
+  olist_dbt_pipeline:
+    quotes: true
