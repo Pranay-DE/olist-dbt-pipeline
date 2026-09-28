@@ -1,14 +1,11 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop TABLE IF EXISTS {{this.name}}_backup",
-        "CREATE TABLE {{this.name}}_backup as SELECT * FROM {{this.name}}"
-    ]
+    pre_hook = ["{{ backup_table() }}"]
 )
 }}
 
 with payments as(
-    Select * from {{ref('stg_order_payments')}}
+    Select * from {{ ref('stg_order_payments') }}
 ),
 
 cleaned as(

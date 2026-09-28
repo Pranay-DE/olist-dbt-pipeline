@@ -1,18 +1,15 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop Table If Exists {{ this.name }}_backup",
-        "Create Table {{ this.name }}_backup as Select * From {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table() }}"]
 )
 }}
 
-with orders as(SELECT * FROM {{ref ('orders_clean')}}),
-customers as(Select * From {{ref ('customers_clean')}}),
-items as(Select * From {{ref ('order_items_clean')}}),
-products as(Select * From {{ref ('products_clean')}}),
-sellers as(Select * From {{ref ('sellers_clean')}}),
-reviews as(Select * From {{ref ('order_reviews_clean')}}),
+with orders as(SELECT * FROM {{ ref ('orders_clean') }}),
+customers as(Select * From {{ ref ('customers_clean') }}),
+items as(Select * From {{ ref ('order_items_clean') }}),
+products as(Select * From {{ ref ('products_clean') }}),
+sellers as(Select * From {{ ref ('sellers_clean') }}),
+reviews as(Select * From {{ ref ('order_reviews_clean') }}),
 
 -- make payment rank to take all payment type
 payment_rank_tab AS (

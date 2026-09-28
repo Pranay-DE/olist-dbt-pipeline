@@ -1,14 +1,11 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop Table If EXISTS {{ this.name }}_backup",
-        "Create TABLE {{ this.name }}_backup as Select * FROM {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table() }}"]
 )
 }}
 
 with order_items as(
-    select * from {{ref('stg_order_items')}}
+    select * from {{ ref('stg_order_items') }}
 ),
 
 removed_duplicates as(

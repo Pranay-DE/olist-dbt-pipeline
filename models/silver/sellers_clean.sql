@@ -1,14 +1,11 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop Table If EXISTS {{ this.name }}_backup",
-        "Create Table {{ this.name }}_backup as Select * From {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table() }}"]
 )
 }}
 
 with sellers as(
-    Select * From {{ref('stg_sellers')}}
+    Select * From {{ ref('stg_sellers') }}
 ),
 
 cleaned as(

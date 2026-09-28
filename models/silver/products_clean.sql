@@ -1,18 +1,15 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop Table If EXISTS {{ this.name }}_backup",
-        "Create TABLE {{ this.name }}_backup as Select * FROM {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table()  }}"]
 )
-}}
+ }}
 
 with product as(
-    Select * from{{ref ('stg_products')}}
+    Select * from {{ ref ('stg_products')  }}
 ),
 
 product_translation as(
-    Select * From{{ref ('stg_product_translation')}}
+    Select * from {{ ref ('stg_product_translation') }}
 ),
 
 cleaned as(

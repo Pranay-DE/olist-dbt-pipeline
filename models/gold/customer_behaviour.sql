@@ -1,9 +1,6 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "DROP TABLE IF EXISTS {{ this.name }}_backup",
-        "CREATE TABLE {{ this.name }}_backup as SELECT * FROM {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table() }}"]
 )
 }}
 

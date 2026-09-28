@@ -1,6 +1,6 @@
 with source AS(
 
-    select * from {{source('olist', 'olist_customers_dataset')}}
+    select * from {{ source('olist', 'olist_customers_dataset') }}
 
 ),
 

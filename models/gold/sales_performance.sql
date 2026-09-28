@@ -1,14 +1,11 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop Table If Exists {{ this.name }}_backup",
-        "Create Table {{ this.name }}_backup as Select * From {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table()  }}"]
 )
-}}
+ }}
 
 with master as(
-    SELECT * FROM{{ ref('olist_master_table') }}
+    SELECT * FROM {{ ref('olist_master_table')  }}
     WHERE product_id IS NOT NULL
 ),
 

@@ -1,14 +1,11 @@
 {{ config(
     MATERIALIZED = 'table',
-    pre_hook = [
-        "Drop Table If Exists {{ this.name }}_backup",
-        "Create Table {{ this.name }}_backup as Select * From {{ this.name }}"
-    ]
+    pre_hook = ["{{ backup_table() }}"]
 )
 }}
 
 with review as(
-    Select * From {{ref('stg_order_reviews')}}
+    Select * From {{ ref('stg_order_reviews') }}
 ),
 
 review_flags as(
