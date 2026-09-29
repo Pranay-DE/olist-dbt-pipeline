@@ -32,10 +32,13 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   olist_dbt_pipeline:
     staging:
+      +schema: raw
       +materialized: view
     silver:
+      +schema: silver
       +materialized: table
     gold:
+      +schema: gold
       +materialized: table
 
 
