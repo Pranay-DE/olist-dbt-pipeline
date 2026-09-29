@@ -1,9 +1,14 @@
 # Olist E-Commerce dbt Pipeline
 
+> ⚠️ This branch (`main`) runs on **DuckDB**.
+> For the **Snowflake** version, see the [`snowflake-migration`](../../tree/snowflake-migration) branch.
+
+A production-style ELT pipeline on 100k+ real e-commerce orders — medallion architecture, 112 passing data tests, and cross-warehouse portability across DuckDB and Snowflake.
+
 ## Overview
 End-to-end ELT pipeline transforming raw Brazilian e-commerce data 
 from Olist through Bronze → Silver → Gold layers using dbt and DuckDB.
-Built to demonstrate modern analytics engineering practices including medallion architecture, data quality testing, backup recovery strategy, and business-ready analytical models.
+Built to demonstrate modern analytics engineering practices including medallion architecture, data quality testing, backup recovery strategy, and business-ready analytical models. The same pipeline is also ported to Snowflake on the `snowflake-migration` branch.
 
 ## Architecture
 - **Staging (Bronze):** 9 models — raw source tables declared and lightly cleaned, built as views
@@ -30,17 +35,20 @@ flowchart TD
 - **Git + GitHub** — version control and portfolio
 
 ## Project Structure
+```
 models/
-- staging: → 9 views, one per source table
-    - sources.yml
-    - stg_*.sql
-- silver: → 7 cleaned and validated tables
-    - schema.yml
-    - *_clean.sql
-- gold: → 4 business ready analytical tables
-    - schema.yml
-    - *.sql
-tests/ → custom data quality tests
+├── staging/          # 9 views, one per source table
+│   ├── sources.yml
+│   └── stg_*.sql
+├── silver/           # 7 cleaned and validated tables
+│   ├── schema.yml
+│   └── *_clean.sql
+└── gold/             # 4 business-ready analytical tables
+    ├── schema.yml
+    └── *.sql
+
+tests/                # custom data quality tests
+```
 
 ## Staging Layer (Bronze) Models
 
@@ -98,7 +106,7 @@ tests/ → custom data quality tests
 - **Invalid date filtering** — 1,382 orders with date sequence violations excluded from gold layer
 - **Explicit tie-breaking on payment preference** — when a customer uses two payment types equally, tie is broken alphabetically for deterministic results
 
-## Skills Demostrated
+## Skills Demonstrated
 - **dbt**: models, sources, tests, docs, pre-hooks, materializations, refs
 - **SQL**: window functions, CTEs, conditional aggregation, NULLIF safety, DISTINCT-aware joins
 - **Data Modeling**: medallion architecture, grain selection, dimensional design
@@ -112,6 +120,13 @@ tests/ → custom data quality tests
 4. Run full pipeline: `dbt build`
 5. Run tests only: `dbt test`
 6. View documentation: `dbt docs generate && dbt docs serve`
+
+## 🔀 Branches
+
+| Branch | Warehouse | Status |
+|---|---|---|
+| `main` | DuckDB | ✅ Complete |
+| `snowflake-migration` | Snowflake | ✅ Complete |
 
 ## Status
 ✅ Project Complete
@@ -127,6 +142,6 @@ tests/ → custom data quality tests
   - delivery_performance — per seller delivery KPIs
 
 ### Next Steps
-- 🔜 Migrate to Snowflake — replace DuckDB adapter
+- ✅ Migrated to Snowflake — see snowflake-migration branch
+- 🔜 Orchestrate with Airflow + Astronomer Cosmos
 - 🔜 Add dbt Cloud scheduling and alerting
-- 🔜 Databricks project — medallion architecture with PySpark and Delta Lake
