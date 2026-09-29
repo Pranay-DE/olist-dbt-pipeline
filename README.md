@@ -86,7 +86,8 @@ tests/                # custom data quality tests
 | delivery_performance | seller_id | On time rate, late rate, avg delivery days, avg review score per seller |
 
 ## Data Quality
-- **112 tests** across all layers — all passing
+- **92 data tests** across all layers — all passing
+- **112 total dbt nodes** built successfully in a single `dbt build` (9 staging views + 11 tables + 92 tests)
 - Source empty checks on all 9 raw tables
 - Custom singular tests for business logic validation:
     - assert_no_future_order_dates — no order_date beyond today
