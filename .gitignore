@@ -6,3 +6,10 @@ dev.duckdb
 raw_data/
 *_preview.csv
 *.csv
+*_env
+profiles.yml
+airflow/logs/
+airflow/*.db
+airflow/*.sqlite
+airflow/airflow.cfg
+__pycache__/
