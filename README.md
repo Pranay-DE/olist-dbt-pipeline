@@ -2,8 +2,9 @@
 
 > ⚠️ This branch (`main`) runs on **DuckDB**.
 > For the **Snowflake** version, see the [`snowflake-migration`](../../tree/snowflake-migration) branch.
+> For **Airflow orchestration**, see the [`airflow-orchestration`](../../tree/airflow-orchestration) branch.
 
-A production-style ELT pipeline on 100k+ real e-commerce orders — medallion architecture, 112 passing data tests, and cross-warehouse portability across DuckDB and Snowflake.
+A production-style ELT pipeline on 100k+ real e-commerce orders — medallion architecture, 92 passing data tests, and cross-warehouse portability across DuckDB, Snowflake, and Airflow orchestration.
 
 ## Overview
 End-to-end ELT pipeline transforming raw Brazilian e-commerce data 
@@ -128,6 +129,7 @@ tests/                # custom data quality tests
 |---|---|---|
 | `main` | DuckDB | ✅ Complete |
 | `snowflake-migration` | Snowflake | ✅ Complete |
+| `airflow-orchestration` | Snowflake + Airflow | ⚠️ DAG ready (Windows blocked) |
 
 ## Status
 ✅ Project Complete
@@ -144,5 +146,6 @@ tests/                # custom data quality tests
 
 ### Next Steps
 - ✅ Migrated to Snowflake — see snowflake-migration branch
-- 🔜 Orchestrate with Airflow + Astronomer Cosmos
+- 🚧 Airflow DAG written and pushed — see airflow-orchestration branch (requires Linux/WSL to run)
 - 🔜 Add dbt Cloud scheduling and alerting
+
