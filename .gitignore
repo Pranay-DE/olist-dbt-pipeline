@@ -14,3 +14,5 @@ __pycache__/
 airflow_env/
 profiles.yml
 *_env
+.venv/
+venv/
