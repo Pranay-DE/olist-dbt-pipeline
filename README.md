@@ -2,13 +2,14 @@
 
 > ⚠️ This branch (`snowflake-migration`) runs on **Snowflake**.
 > For the original **DuckDB** version, see the [`main`](../../tree/main) branch.
+> For **Airflow orchestration**, see the [`airflow-orchestration`](../../tree/airflow-orchestration) branch.
 
 ## Overview
 End-to-end ELT pipeline transforming raw Brazilian e-commerce data 
 from Olist through Raw → Silver → Gold layers using dbt and Snowflake.
-Built to demonstrate modern analytics engineering practices including medallion architecture, data quality testing, custom schema routing, table backup strategy, and business-ready analytical models.
+Built to demonstrate modern analytics engineering practices including medallion architecture, data quality testing, custom schema routing, table backup strategy, and business-ready analytical models. The same pipeline is also ported back to DuckDB on the `main` branch and orchestrated on the `airflow-orchestration` branch.
 
-A production-style ELT pipeline on 100k+ real e-commerce orders — medallion architecture, 92 passing data tests across 121 dbt nodes, and cross-warehouse portability across DuckDB and Snowflake.
+A production-style ELT pipeline on 100k+ real e-commerce orders — medallion architecture, 92 passing data tests across 121 dbt nodes, and cross-warehouse portability across DuckDB, Snowflake, and Airflow orchestration.
 
 ## Architecture
 - **RAW / Staging (Bronze):** 9 models — raw source tables declared and lightly cleaned, built as views in `OLIST_WAREHOUSE.RAW`
@@ -156,7 +157,7 @@ Before a silver or gold table model rebuilds, this macro creates a `<table>_back
 - **Invalid date filtering** — 1,382 orders with date sequence violations excluded from gold layer
 - **Explicit tie-breaking on payment preference** — when a customer uses two payment types equally, tie is broken alphabetically for deterministic results
 
-## Skills Demostrated
+## Skills Demonstrated
 - **dbt**: models, sources, tests, docs, pre-hooks, materializations, refs, custom macros
 - **Snowflake**: schemas, warehouses, roles, `ACCOUNTADMIN` configuration
 - **SQL**: window functions, CTEs, conditional aggregation, NULLIF safety, DISTINCT-aware joins
@@ -208,6 +209,21 @@ Before a silver or gold table model rebuilds, this macro creates a `<table>_back
 |---|---|---|
 | `main` | DuckDB | ✅ Complete |
 | `snowflake-migration` | Snowflake | ✅ Complete |
+| `airflow-orchestration` | Snowflake + Airflow | ⚠️ DAG ready (Windows blocked) |
+
+## 📈 Results
+
+**Snowflake schemas — `RAW`, `SILVER`, `GOLD` created in `OLIST_WAREHOUSE`:**
+
+![Snowflake schemas](docs/snowflake_schemas.png)
+
+**Gold layer tables — 4 analytical models built by dbt:**
+
+![Gold layer tables](docs/snowflake_gold_tables.png)
+
+**Sample query — top revenue categories from `sales_performance`:**
+
+![Snowflake query result](docs/snowflake_query_result.png)
 
 ## Status
 ✅ Project Complete
@@ -227,5 +243,6 @@ Before a silver or gold table model rebuilds, this macro creates a `<table>_back
 - ✅ Custom `backup_table` macro for point-in-time recovery
 
 ### Next Steps
-- 🔜 Orchestrate the pipeline with Airflow + Astronomer Cosmos
+- 🚧 Airflow DAG written and pushed — see `airflow-orchestration` branch (requires Linux/WSL to run)
 - 🔜 Add dbt Cloud scheduling and alerting
+
