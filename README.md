@@ -131,6 +131,16 @@ tests/                # custom data quality tests
 | `snowflake-migration` | Snowflake | ✅ Complete |
 | `airflow-orchestration` | Snowflake + Airflow | ⚠️ DAG ready (Windows blocked) |
 
+## 📈 Results
+
+**dbt build — full pipeline execution (11 table models, 9 view models, 92 tests):**
+
+![dbt build success](docs/dbt_build_success.png)
+
+**dbt lineage — full medallion architecture:**
+
+![dbt lineage](docs/duckdb_lineage.png)
+
 ## Status
 ✅ Project Complete
 
