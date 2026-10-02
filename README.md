@@ -137,12 +137,6 @@ airflow webserver --port 8080
 | `snowflake-migration` | Snowflake | ✅ Complete |
 | `airflow-orchestration` | Snowflake + Airflow | ⚠️ DAG ready (Windows blocked) |
 
-## 📈 Results
-
-**Airflow DAG — orchestration code:**
-
-![Airflow DAG code](docs/airflow_dag_code.png)
-
 ## Status
 🚧 DAG ready — pending Linux runtime
 
