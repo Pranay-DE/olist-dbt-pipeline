@@ -13,3 +13,5 @@ airflow/*.db
 airflow/*.sqlite
 airflow/airflow.cfg
 __pycache__/
+.venv/
+venv/
